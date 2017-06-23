@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+# TODO: Add network programming support
+
 # A list of allowed charachters.
 ALLOWED = ['.', ',', '[', ']', '<', '>', '+', '-', '#', '%', '!']
 
