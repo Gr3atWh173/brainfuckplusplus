@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 # A list of allowed charachters.
-ALLOWED = ['.', ',', '[', ']', '<', '>', '+', '-', '#', '%']
+ALLOWED = ['.', ',', '[', ']', '<', '>', '+', '-', '#', '%', '!']
 
 def execute(filename)
 	begin    
@@ -40,6 +40,7 @@ def evaluate(code)
         when '#' then 
           if handler.nil?
              handler = File.open(cells[cellptr].chr, "w")
+             cursor = 0
           else
             handler.close
             handler = nil
@@ -47,6 +48,14 @@ def evaluate(code)
         when "%" then 
           if ! handler.nil?
             handler.write(cells[cellptr].chr)
+          else
+            $stderr.write "At #{codeptr}: ERROR - NO FILE IS OPEN\n"
+            exit
+          end
+        when '!'
+          if ! handler.nil?
+            cells[cellptr] = handler.read()[cursor]
+            cursor += 1;
           else
             $stderr.write "At #{codeptr}: ERROR - NO FILE IS OPEN\n"
             exit
