@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
-#require 'benchmark'
 
 # A list of allowed charachters.
-ALLOWED = ['.', ',', '[', ']', '<', '>', '+', '-']
+ALLOWED = ['.', ',', '[', ']', '<', '>', '+', '-', '#', '%']
 
 def execute(filename)
 	begin    
@@ -13,13 +12,14 @@ def execute(filename)
 	end
 	
     evaluate(f)
-
 end
 
 def evaluate(code)
     # cleanup the code (Remove anything not in ALLOWED) and then build a bracemap.
     code = cleanup(code.chars)
     bracemap = buildbracemap(code)
+    handler = nil
+    cursor = 0
 
     cells, codeptr, cellptr = [0], 0, 0
 
@@ -33,10 +33,24 @@ def evaluate(code)
         when '<' then cellptr = cellptr <= 0 ? 0 : cellptr - 1
         when '+' then cells[cellptr] = cells[cellptr] < 255 ? cells[cellptr] + 1 : 0
         when '-' then cells[cellptr] = cells[cellptr] > 0 ? cells[cellptr] - 1 : 255
-        when "[" then if cells[cellptr] == 0 then codeptr = bracemap[codeptr] end
-        when "]" then if cells[cellptr] != 0 then codeptr = bracemap[codeptr] end
-        when "." then $stdout.write cells[cellptr].chr
+        when '[' then if cells[cellptr] == 0 then codeptr = bracemap[codeptr] end
+        when ']' then if cells[cellptr] != 0 then codeptr = bracemap[codeptr] end
+        when '.' then $stdout.write cells[cellptr].chr
         when ',' then cells[cellptr] = gets.chomp.chr.ord
+        when '#' then 
+          if handler.nil?
+             handler = File.open(cells[cellptr].chr, "w")
+          else
+            handler.close
+            handler = nil
+          end
+        when "%" then 
+          if ! handler.nil?
+            handler.write(cells[cellptr].chr)
+          else
+            $stderr.write "At #{codeptr}: ERROR - NO FILE IS OPEN\n"
+            exit
+          end
         end
 
         codeptr += 1
@@ -71,6 +85,5 @@ def main()
     else print "Usage: #{File.basename($0)} filename" end
 end
 
-#puts Benchmark.measure{main}
 main
 exit
