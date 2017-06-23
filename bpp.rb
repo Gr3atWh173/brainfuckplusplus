@@ -47,14 +47,14 @@ def evaluate(code)
           end
         when "%" then 
           if ! handler.nil?
-            handler.write(cells[cellptr].chr)
+            handler.syswrite(cells[cellptr].chr)
           else
             $stderr.write "At #{codeptr}: ERROR - NO FILE IS OPEN\n"
             exit
           end
         when '!'
           if ! handler.nil?
-            cells[cellptr] = handler.read()[cursor]
+            cells[cellptr] = handler.sysread()[cursor]
             cursor += 1;
           else
             $stderr.write "At #{codeptr}: ERROR - NO FILE IS OPEN\n"
