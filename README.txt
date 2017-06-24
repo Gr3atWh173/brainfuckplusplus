@@ -22,14 +22,11 @@ Instruction Set:
     ]   ->  End loop
 
   Extended:
-
-    Implemented:
-      #   ->  Open/close File
-      %   ->  Write value of current cell to file
-      !   ->  Read one character from file (at the current cursor position)
-    To be Implemented:
-      *   ->  Open socket to localhost
-      &   ->  Write value of current cell to socket 
-      $   ->  Read value of current cell to socket
+    #   ->  Open/close File
+    %   ->  Write value of current cell to file
+    !   ->  Read one character from file (at the current cursor position)
+    *   ->  Open socket to localhost
+    &   ->  Write value of current cell to socket 
+    $   ->  Read value of current cell to socket
 
 USAGE: ruby bpp.rb <file.bf>

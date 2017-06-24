@@ -3,7 +3,22 @@
 # TODO: Add network programming support
 
 # A list of allowed charachters.
-ALLOWED = ['.', ',', '[', ']', '<', '>', '+', '-', '#', '%', '!']
+ALLOWED = [
+           '.', # Standard out
+           ',', # Standard in
+           '[', # Loop start
+           ']', # Loop end
+           '<', # Move back a cell
+           '>', # Move ahead a cell
+           '+', # Add 1 to the current cell
+           '-', # Sub 1 from the current cell
+           '#', # Open/close file
+           '%', # Write val of current cell to file
+           '!', # Read a char from file and set it as the current cell
+           '@', # Open/close socket to localhost (on port 1337)
+           '&', # Read 1 char from the socket and set as current cell
+           '*'  # Write val of current cell to socket
+          ]
 
 def execute(filename)
 	begin    
@@ -22,6 +37,7 @@ def evaluate(code)
     bracemap = buildbracemap(code)
     handler = nil
     cursor = 0
+    sock = nil
 
     cells, codeptr, cellptr = [0], 0, 0
 
@@ -38,7 +54,7 @@ def evaluate(code)
         when '[' then if cells[cellptr] == 0 then codeptr = bracemap[codeptr] end
         when ']' then if cells[cellptr] != 0 then codeptr = bracemap[codeptr] end
         when '.' then $stdout.write cells[cellptr].chr
-        when ',' then cells[cellptr] = gets.chomp.chr.ord
+        when ',' then cells[cellptr] = $stdin.getc.ord
         when '#' then 
           if handler.nil?
              handler = File.open(cells[cellptr].chr, "w")
@@ -47,7 +63,7 @@ def evaluate(code)
             handler.close
             handler = nil
           end
-        when "%" then 
+        when "%"  
           if ! handler.nil?
             handler.syswrite(cells[cellptr].chr)
           else
@@ -62,6 +78,25 @@ def evaluate(code)
             $stderr.write "At #{codeptr}: ERROR - NO FILE IS OPEN\n"
             exit
           end
+        when '@' 
+            if sock.nil?
+                sock = TCPSocket.new("127.0.0.1", 1337)
+            else
+                sock.close
+                sock = nil
+            end
+        when '*'
+            if ! sock.nil?
+                sock.write(cells[cellptr].chr)
+            else
+                $stderr.write "At #{codeptr}: ERROR - NO SOCK IS OPEN\n"
+            end
+        when '&'
+            if ! sock.nil?
+                cells[cellptr] = sock.getc.ord
+            else
+                $stderr.write "At #{codeptr}: ERROR - NO SOCK IS OPEN\n"
+            end
         end
 
         codeptr += 1
