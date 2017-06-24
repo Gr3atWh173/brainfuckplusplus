@@ -25,8 +25,8 @@ Instruction Set:
     #   ->  Open/close File
     %   ->  Write value of current cell to file
     !   ->  Read one character from file (at the current cursor position)
-    *   ->  Open socket to localhost
-    &   ->  Write value of current cell to socket 
-    $   ->  Read value of current cell to socket
+    @   ->  Open/close socket to localhost:1337
+    &   ->  Read one char from socket and set it as val of current cell 
+    *   ->  Write value of current cell to socket
 
 USAGE: ruby bpp.rb <file.bf>
