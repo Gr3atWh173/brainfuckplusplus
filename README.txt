@@ -7,7 +7,7 @@
 |____/|  __/ \__/\_\\_)__/    |_|   \___/  > < |_|\_\            
       | |                                 / ^ \                  
       |_|                                /_/ \_\              
-          Standard Brainfuck + File IO + Socket IO
+      Standard Brainfuck + File IO + Socket IO + More
 
 Instruction Set:
 
