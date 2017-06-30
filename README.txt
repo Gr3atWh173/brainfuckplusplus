@@ -31,3 +31,8 @@ Instruction Set:
     ~   ->  Goto cell[current cell value]
 
 USAGE: ruby bpp.rb <file.bf>
+
+PLANNED FEATURES:
+1. Functions support
+2. Interactive mode
+3. Psuedo-threading support
