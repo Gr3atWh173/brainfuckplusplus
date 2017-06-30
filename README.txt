@@ -28,5 +28,6 @@ Instruction Set:
     @   ->  Open/close socket to localhost:1337
     &   ->  Read one char from socket and set it as val of current cell 
     *   ->  Write value of current cell to socket
+    ~   ->  Goto cell[current cell value]
 
 USAGE: ruby bpp.rb <file.bf>
