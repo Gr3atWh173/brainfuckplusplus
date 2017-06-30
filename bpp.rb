@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# TODO: Add network programming support
+# TODO: Add functions support
 
 # A list of allowed charachters.
 ALLOWED = [
@@ -17,7 +17,8 @@ ALLOWED = [
            '!', # Read a char from file and set it as the current cell
            '@', # Open/close socket to localhost (on port 1337)
            '&', # Read 1 char from the socket and set as current cell
-           '*'  # Write val of current cell to socket
+           '*', # Write val of current cell to socket
+           '~', # goto cell[value of current cell]
           ]
 
 def execute(filename)
@@ -40,8 +41,9 @@ def evaluate(code)
     sock = nil
 
     cells, codeptr, cellptr = [0], 0, 0
+    code_length = code.length
 
-    while codeptr < code.length
+    while codeptr < code_length
         command = code[codeptr]
 
         # Iterate through all the commands in the code and evaluate
@@ -96,6 +98,12 @@ def evaluate(code)
                 cells[cellptr] = sock.getc.ord
             else
                 $stderr.write "At #{codeptr}: ERROR - NO SOCK IS OPEN\n"
+            end
+        when '~'
+            if cells[cellptr] < code_length
+                codeptr = cells[cellptr] - 1
+            else
+                $stderr.write "At #{codeptr}: ERROR - CELL VALUE OUT OF RANGE\n"
             end
         end
 
