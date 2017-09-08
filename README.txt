@@ -29,6 +29,7 @@ Instruction Set:
     &   ->  Read one char from socket and set it as val of current cell 
     *   ->  Write value of current cell to socket
     ~   ->  Goto cell[current cell value]
+    $   ->  Toggle character mode
 
 USAGE: ruby bpp.rb <file.bf>
 
