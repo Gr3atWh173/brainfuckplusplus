@@ -18,7 +18,8 @@ ALLOWED = [
             '@', # Open/close socket to localhost (on port 1337)
             '&', # Read 1 char from the socket and set as current cell
             '*', # Write val of current cell to socket
-            '~' # goto cell[value of current cell]
+            '~', # goto cell[value of current cell]
+            '$'  # toggle character mode
           ]
 
 def execute(filename)
@@ -43,6 +44,7 @@ def evaluate(code)
   codeptr = 0
   cellptr = 0
   code_length = code.length
+  cmode = true
 
   while codeptr < code_length
     command = code[codeptr]
@@ -56,8 +58,13 @@ def evaluate(code)
     when '-' then cells[cellptr] = cells[cellptr] > 0 ? cells[cellptr] - 1 : 255
     when '[' then if (cells[cellptr]).zero? then codeptr = bracemap[codeptr] end
     when ']' then if cells[cellptr] != 0 then codeptr = bracemap[codeptr] end
-    when '.' then $stdout.write cells[cellptr].chr
     when ',' then cells[cellptr] = $stdin.getc.ord
+    when '.' then
+      if cmode  
+        $stdout.write cells[cellptr].chr
+      else
+        $stdout.write cells[cellprt].to_s
+      end
     when '#' then
       if handler.nil?
         handler = File.open(cells[cellptr].chr, 'w')
@@ -106,6 +113,8 @@ def evaluate(code)
       else
         $stderr.write "At #{codeptr}: ERROR - CELL VALUE OUT OF RANGE\n"
       end
+    when '$'
+      if !cmode then cmode = true else cmode = false end
     end
 
     codeptr += 1
