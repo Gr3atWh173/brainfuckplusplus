@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'socket'
 # TODO: Add functions support
 
 # A list of allowed charachters.
