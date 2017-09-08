@@ -16,7 +16,7 @@ Instruction Set:
     -   ->  Decrease current cell value by 1
     <   ->  Move back a cell
     >   ->  Move ahead a cell
-    .   ->  Print ASCII of current cell
+    .   ->  Print ASCII or numeric value of current cell
     ,   ->  Set cell value as ASCII code of input
     [   ->  Begin loop
     ]   ->  End loop
