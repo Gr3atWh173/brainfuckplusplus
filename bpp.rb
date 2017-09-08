@@ -64,7 +64,7 @@ def evaluate(code)
       if cmode  
         $stdout.write cells[cellptr].chr
       else
-        $stdout.write cells[cellprt].to_s
+        $stdout.write cells[cellptr].to_s
       end
     when '#' then
       if handler.nil?
